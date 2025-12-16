@@ -1813,7 +1813,7 @@ server.addTool({
     parameters: z.object({
         title: z.string().min(1).describe('Title for the new document.'),
         parentFolderId: z.string().optional().describe('ID of folder where document should be created. If not provided, creates in Drive root.'),
-        initialContent: z.string().optional().describe('Base text content to add to the document. This does NOT include annotations or word highlights'),
+        //initialContent: z.string().optional().describe('Base text content to add to the document. This does NOT include annotations or word highlights'),
         imageUrl: z.string().url().describe('Publicly accessible URL to the image (must be http:// or https://).')
     }),
     execute: async (args, { log }) => {

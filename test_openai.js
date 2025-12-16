@@ -7,14 +7,26 @@ const client = new OpenAI({
 
 async function runTest() {
   try {
-    const response = await client.chat.completions.create({
+    const response = await client.responses.create({
       model: "gpt-4o-mini",
-      messages: [
-        { role: "user", content: "What's 1 + 1?" }
-      ],
+      text: {
+        format: { type: "json_object" } // error handling
+      },
+      input: [
+        {
+          role: "user",
+          content: [
+            { type: "input_text", text: "Extract the highlighted text from this image. Return your response in Json format {text1: color1, text2: color2}" },
+            {
+              type: "input_image",
+              image_url: "https://iili.io/fc9UPkl.md.png"
+            }
+          ]
+        }
+      ]
     });
 
-    console.log("GPT Response:", response.choices[0].message.content);
+    console.log("GPT Response:", response.output_text);
   } catch (error) {
     console.error("Error calling OpenAI API:", error);
   }
