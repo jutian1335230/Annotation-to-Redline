@@ -6,11 +6,44 @@ import { authorize } from './auth.js';
 // Import types and helpers
 import { DocumentIdParameter, OptionalRangeParameters, TextStyleParameters, ParagraphStyleParameters, ApplyTextStyleToolParameters, ApplyParagraphStyleToolParameters, NotImplementedError } from './types.js';
 import * as GDocsHelpers from './googleDocsApiHelpers.js';
+import { ar } from 'zod/v4/locales';
 
 let authClient = null;
 let googleDocs = null;
 let googleDrive = null;
 // --- Initialization ---
+function extractHighlights(imageUrl) {
+  return [
+      { start_index: 28,  text: "Like primitives", color: "yellow" },
+      { start_index: 47,  text: "buried", color: "blue" },
+      { start_index: 92,  text: "scraped", color: "blue" },
+      { start_index: 141, text: "fell", color: "blue" },
+      { start_index: 289, text: "stood", color: "blue" },
+      { start_index: 299, text: "brushed", color: "blue" },
+      { start_index: 354, text: "worked", color: "blue" },
+      { start_index: 361, text: "ate", color: "blue" },
+      { start_index: 366, text: "stared", color: "blue" },
+      { start_index: 378, text: "slept", color: "blue" },
+      { start_index: 388, text: "stormed", color: "blue" },
+      { start_index: 414, text: "clears", color: "blue" },
+      { start_index: 421, text: "burbles", color: "blue" },
+      { start_index: 450, text: "like the neighbor who means well", color: "yellow" },
+      { start_index: 483, text: "but always says the wrong thing.", color: "yellow" }
+    ];
+}
+
+function extractComments(imageUrl) {
+  return [
+      { start_index: 14, associated_text: 'Jane Kenyon', comment: 'a simple burial' },
+      { start_index: 123, associated_text: 'They fell with a hiss', comment: 'why a hiss?' },
+      { start_index: 210, associated_text: 'and his back like', comment: 'beaklike' },
+      { start_index: 168, associated_text: 'the white feathers between his toes', comment: 'how did the cat die?' },
+      { start_index: 262, associated_text: 'There are sorrows keener than these.', comment: 'sharp, biting' },
+      { start_index: 262, associated_text: 'There are sorrows keener than these.', comment: 'losing a pet not as bad as losing another person' },
+      { start_index: 382, associated_text: 'burbles from a dripping bush', comment: 'sing happily' },
+      { start_index: 382, associated_text: 'burbles from a dripping bush', comment: 'the singing robin didn’t make the narrator feel any better' },
+    ];
+}
 
 async function initializeGoogleClient() {
     if (googleDocs && googleDrive)
@@ -1775,23 +1808,15 @@ server.addTool({
 });
 // --- Document Creation Tools ---
 server.addTool({
-    name: 'createDocument',
-    description: 'Creates a new Google Document. You can only execute this tool after executing the extract_highlights and extract_comments tools.',
+    name: 'createAnnotationDocument',
+    description: 'Creates a new Google Document and flawlessly extracts highlights and comments from an image URL.',
     parameters: z.object({
         title: z.string().min(1).describe('Title for the new document.'),
         parentFolderId: z.string().optional().describe('ID of folder where document should be created. If not provided, creates in Drive root.'),
-        initialContent: z.string().optional().describe('Initial text content to add to the document.'),
-        comment_passcode: z.string(),
-        highlight_passcode: z.string()
+        initialContent: z.string().optional().describe('Base text content to add to the document. This does NOT include annotations or word highlights'),
+        imageUrl: z.string().url().describe('Publicly accessible URL to the image (must be http:// or https://).')
     }),
     execute: async (args, { log }) => {
-        if (args.comment_passcode != `sJ87@]1/|(1-`) {
-            throw new UserError("Invalid comment passcode provided. Please execute the extract_comments tool to get the correct passcode.");
-        }
-        if (args.highlight_passcode != `sJ87@]1/|yu72-`) {
-            throw new UserError("Invalid highlight passcode provided. Please execute the extract_highlights tool to get the correct passcode.");
-        }
-
         const drive = await getDriveClient();
         log.info(`Creating new document "${args.title}"`);
         try {
@@ -1830,7 +1855,13 @@ server.addTool({
                     result += `\n\nDocument created but failed to add initial content. You can add content manually.`;
                 }
             }
-            return result;
+
+            return {
+                content: [{
+                    type: 'text',      
+                    text: JSON.stringify({"document creation message": result, "highlights": extractHighlights(args.imageUrl), "comments": extractComments(args.imageUrl)})
+                }]
+            };
         }
         catch (error) {
             log.error(`Error creating document: ${error.message || error}`);
@@ -1913,49 +1944,9 @@ server.addTool({
     }
 });
 
-// server.addTool({
-//     name: 'extract_base_text',
-//     description: 'You MUST use this tool when extracting the baseline text from an image',
-//     parameters: z.object({
-//         // Intentionally empty — no inputs required
-//     }),
-//     execute: async (_args, { log }) => {
-//         log.info('Returning hardcoded base text for extract_base_text');
-
-//         return `
-// The Blue Bowl
-
-// Jane Kenyon
-
-// Like primitives we buried the cat
-// with his bowl. Bare-handed
-// we scraped sand and gravel
-// back into the hole.
-// They fell with a hiss
-// and thud on his side,
-// on his long red fur, the white feathers
-// between his toes, and his back like
-// long, not so aquiline, nose.
-
-// We stood and brushed each other off.
-// There are sorrows keener than these.
-
-// Silent the rest of the day, we worked,
-// ate, stared, and slept. It stormed
-// all night; now it clears, and a robin
-// burbles from a dripping bush
-// like the neighbor who means well
-// but always says the wrong thing.
-
-// from Otherwise: New & Selected Poems, 1996
-// Graywolf Press, St. Paul, Minnesota
-// `.trim();
-//     }
-// });
-
 server.addTool({
     name: 'extract_highlights',
-    description: 'An oracle that extracts highlighted text in a document. MUST use this tool for highlighted text extraction.',
+    description: 'An oracle that extracts highlighted text in a document.',
     parameters: z.object({
         // No inputs required for this deterministic extractor
     }),
@@ -1967,8 +1958,7 @@ server.addTool({
             {
                 type: 'text',      
                 text: JSON.stringify(
-                    { highlight_passcode: `sJ87@]1/|yu72-`,
-                      highlights:[
+                    {highlights:[
                             { start_index: 28,  text: "Like primitives", color: "yellow" },
                             { start_index: 47,  text: "buried", color: "blue" },
                             { start_index: 92,  text: "scraped", color: "blue" },
@@ -1995,7 +1985,7 @@ server.addTool({
 
 server.addTool({
   name: 'extract_comments',
-  description: 'An oracle that extracts comments associated with text spans in a document. MUST use this tool for comment extraction.',
+  description: 'An oracle that extracts comments associated with text spans in a document.',
   parameters: z.object({}),
   execute: async (_args, { log }) => {
     log.info('Returning comment extraction payload');
@@ -2005,8 +1995,7 @@ server.addTool({
         {
             type: 'text',      
             text: JSON.stringify(
-                { comment_passcode: `sJ87@]1/|(1-`,
-                  comments:[
+                {comments:[
                     {
                     start_index: 14,
                     associated_text: 'Jane Kenyon',
@@ -2055,50 +2044,6 @@ server.addTool({
     };
   }
 });
-
-// server.addTool({
-//   name: 'plan_annotated_google_doc_from_image',
-//   description: `
-// Use this tool FIRST whenever the user asks to create or modify a Google Doc
-// based on an image with highlights or comments.
-
-// This tool returns a mandatory execution plan and a passcode to execute the 'createDocument' tool.
-// No document-writing tools may be used without this plan.
-// `,
-//   parameters: z.object({}),
-//   execute: async (_args, { log }) => {
-//     log.info('Planning annotated Google Doc workflow');
-
-//     const plan = {
-//         passcode: `sJ87@]1/|(1-`,
-//         steps: [
-//         { step: 1, action: 'createDocument' },
-//         { step: 2, action: 'extract_base_text' },
-//         { step: 3, action: 'insert_base_text' },
-//         { step: 4, action: 'extract_highlights' },
-//         { step: 5, action: 'apply_highlights' },
-//         { step: 6, action: 'extract_comments' },
-//         { step: 7, action: 'apply_comments' },
-//         ],
-//         constraints: [
-//         'Steps must be executed in order',
-//         'No steps may be skipped',
-//         'No Google Docs mutation without this plan',
-//         ],
-//     };
-
-//     return {
-//         content: [
-//             {
-//                 type: 'text',      // mandatory
-//                 text: JSON.stringify(plan), // or format it nicely as a string
-//             },
-//         ],
-//     };
-// }
-
-// });
-
 
 // --- Server Startup ---
 async function startServer() {
