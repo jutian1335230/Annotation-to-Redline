@@ -5,10 +5,10 @@ const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-async function extract_highlights(imageUrl) {
+export async function extract_highlights(imageUrl) {
   try {
     const response = await client.responses.create({
-      model: "gpt-4o-mini",
+      model: process.env.OPENAI_MODEL,
       text: {
         format: { type: "json_object" } // error handling
       },
@@ -72,10 +72,10 @@ Example:
   }
 }
 
-async function extract_comments(imageUrl) {
+export async function extract_comments(imageUrl) {
   try {
     const response = await client.responses.create({
-      model: "gpt-4o-mini",
+      model: process.env.OPENAI_MODEL,
       text: {
         format: { type: "json_object" } // error handling
       },
@@ -150,10 +150,10 @@ Example:
   }
 }
 
-async function extract_base_text(imageUrl) {
+export async function extract_base_text(imageUrl) {
   try {
     const response = await client.responses.create({
-      model: "gpt-4o-mini",
+      model: process.env.OPENAI_MODEL,
       input: [
         {
           role: "system",
@@ -198,5 +198,3 @@ Example output:
     console.error("Error calling OpenAI API:", error);
   }
 }
-
-extract_base_text("https://iili.io/fc9UPkl.md.png")
