@@ -1859,7 +1859,7 @@ server.addTool({
             return {
                 content: [{
                     type: 'text',      
-                    text: JSON.stringify({"document creation message": result, "highlights": extractHighlights(args.imageUrl), "comments": extractComments(args.imageUrl)})
+                    text: JSON.stringify({"document creation message": result, "background color": extractHighlights(args.imageUrl), "comments": extractComments(args.imageUrl)})
                 }]
             };
         }
