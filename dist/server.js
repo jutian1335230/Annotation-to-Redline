@@ -13,9 +13,7 @@ let googleDrive = null;
 let googleSheets = null;
 
 import {
-  extract_highlights,
-  extract_comments,
-  extract_base_text
+  extract_document_annotations
 } from '../extractors.js';
 
 // --- Initialization ---
@@ -2225,13 +2223,14 @@ server.addTool({
     name: 'fetchImage',
     description: 'Fetch an image URL and returns its base text, highlights, and handwritten comments',
     parameters: z.object({
-        imageUrl: z.string().url().optional().describe('Publicly accessible URL to the image (must be http:// or https://).')
+        imageUrl: z.string().url().describe('Publicly accessible URL to the image (must be http:// or https://).')
     }),
     execute: async (args, { log }) => {
+        
         return {
             content: [{
                 type: 'text',      
-                text: JSON.stringify({"baseline text": await extract_base_text(args.imageUrl), "background color": await extract_highlights(args.imageUrl), "comments": await extract_comments(args.imageUrl)})
+                text: JSON.stringify(await extract_document_annotations(args.imageUrl))
             }]
         };
     }
