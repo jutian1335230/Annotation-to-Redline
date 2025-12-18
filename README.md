@@ -7,7 +7,7 @@
 Connect Claude Desktop (or other MCP clients) to your Google Docs and Google Drive!
 
 > 🔥 **Check out [15 powerful tasks](SAMPLE_TASKS.md) you can accomplish with this enhanced server!**
-> 📁 **NEW:** Complete Google Drive file management capabilities!
+> 📁 **NEW:** Handwritten Note Annotation → Google Docs Integration
 
 This comprehensive server uses the Model Context Protocol (MCP) and the `fastmcp` library to provide tools for reading, writing, formatting, structuring Google Documents, and managing your entire Google Drive. It acts as a powerful bridge, allowing AI assistants like Claude to interact with your documents and files programmatically with advanced capabilities.
 
