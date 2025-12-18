@@ -56,7 +56,8 @@ This comprehensive server uses the Model Context Protocol (MCP) and the `fastmcp
 - **Base Text Extraction:** Extract full printed text from an image
 - **Highlight Detection:** Identify highlighted text with indices and color
 - **Handwritten Comments:** Extract handwritten notes with indices
-- 
+- **Troubleshoot:** A common issue occurs when the provided URL is not explicitly an image URL (i.e., URLs that don’t end with `.png`, `.jpeg`, etc.). To troubleshoot, make sure to clearly specify that the URL points to an image.
+  
 ### Integration
 
 - **Google Authentication:** Secure OAuth 2.0 authentication with full Drive access
