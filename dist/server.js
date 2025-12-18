@@ -472,7 +472,7 @@ server.addTool({
 });
 server.addTool({
     name: 'appendToGoogleDoc',
-    description: 'Appends text to the very end of a specific Google Document or tab. Please use the addComment tool for adding comments!!!',
+    description: 'Appends base text to the very end of a specific Google Document or tab.',
     parameters: DocumentIdParameter.extend({
         textToAppend: z.string().min(1).describe('The text to add to the end.'),
         addNewlineIfNeeded: z.boolean().optional().default(true).describe("Automatically add a newline before the appended text if the doc doesn't end with one."),
@@ -2221,7 +2221,7 @@ server.addTool({
 // --- Image Analysis Tool---
 server.addTool({
     name: 'fetchImage',
-    description: 'Fetch an image URL and returns its base text, highlights, and handwritten comments',
+    description: 'An image URL analysis tool that returns information needed to put into Google Doc.',
     parameters: z.object({
         imageUrl: z.string().url().describe('Publicly accessible URL to the image (must be http:// or https://).')
     }),
