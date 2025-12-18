@@ -133,17 +133,7 @@ Your server needs some helper libraries specified in the `package.json` file.
     ```
     This will download and install all the necessary packages into a `node_modules` folder.
 
-### Step 4: Build the Server Code
-
-The server is written in TypeScript (`.ts`), but we need to compile it into JavaScript (`.js`) that Node.js can run directly.
-
-1.  In your terminal, run:
-    ```bash
-    npm run build
-    ```
-    This uses the TypeScript compiler (`tsc`) to create a `dist` folder containing the compiled JavaScript files.
-
-### Step 5: First Run & Google Authorization (One Time Only)
+### Step 4: First Run & Google Authorization (One Time Only)
 
 Now you need to run the server once manually to grant it permission to access your Google account data. This will create a `token.json` file that saves your permission grant.
 
@@ -172,7 +162,7 @@ Now you need to run the server once manually to grant it permission to access yo
 8.  ✅ **Check:** You should now see a new file named `token.json` in your `mcp-googledocs-server` folder.
 9.  ⚠️ **SECURITY WARNING:** This `token.json` file contains the key that allows the server to access your Google account _without_ asking again. Protect it like a password. **Do not commit it to GitHub.** The included `.gitignore` file should prevent this automatically.
 
-### Step 6: Configure Claude Desktop (Optional)
+### Step 5: Configure Claude Desktop (Optional)
 
 If you want to use this server with Claude Desktop, you need to tell Claude how to run it.
 
