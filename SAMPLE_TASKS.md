@@ -150,11 +150,24 @@ Steps:
 6. Apply consistent spacing between sections
 ```
 
+## 11. Extract Annotations from an Image Document
+
+```
+Task: "Analyze an annotated document image and return structured text and annotations."
+
+Steps:
+1. Provide a public image URL to the image analysis tool
+2. Extract the full printed base text (no annotations)
+3. Identify highlighted text with character indices and colors
+4. Extract handwritten comments with character indices
+5. Return a structured JSON output for document insertion
+```
+
 These examples demonstrate the power and flexibility of the enhanced Google Docs & Drive MCP Server, showcasing how AI assistants can help with sophisticated document formatting, structuring, and comprehensive file management tasks.
 
 ## Google Drive Management Tasks
 
-## 11. Organize Project Files Automatically
+## 12. Organize Project Files Automatically
 
 ```
 Task: "Set up a complete project structure and organize existing files."
@@ -168,7 +181,7 @@ Steps:
 6. Format the index with links to all project documents
 ```
 
-## 12. Create Document Templates and Generate Reports
+## 13. Create Document Templates and Generate Reports
 
 ```
 Task: "Set up a template system and generate standardized reports."
@@ -182,7 +195,7 @@ Steps:
 6. Create a tracking document listing all generated reports
 ```
 
-## 13. Archive and Clean Up Old Documents
+## 14. Archive and Clean Up Old Documents
 
 ```
 Task: "Archive outdated documents and organize current files."
@@ -196,7 +209,7 @@ Steps:
 6. Create an archive index document for reference
 ```
 
-## 14. Duplicate and Distribute Document Sets
+## 15. Duplicate and Distribute Document Sets
 
 ```
 Task: "Create personalized versions of documents for different teams."
@@ -210,7 +223,7 @@ Steps:
 6. Create distribution tracking documents
 ```
 
-## 15. Comprehensive File Management and Reporting
+## 16. Comprehensive File Management and Reporting
 
 ```
 Task: "Generate a complete inventory and management report of all documents."
