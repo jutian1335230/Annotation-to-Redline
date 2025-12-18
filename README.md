@@ -51,6 +51,12 @@ This comprehensive server uses the Model Context Protocol (MCP) and the `fastmcp
 - **File Operations:** Move (`moveFile`), copy (`copyFile`), rename (`renameFile`), delete (`deleteFile`)
 - **Document Creation:** Create new docs (`createDocument`) or from templates (`createFromTemplate`)
 
+### 🆕 Image Document Annotation
+
+- **Base Text Extraction:** Extract full printed text from an image
+- **Highlight Detection:** Identify highlighted text with indices and color
+- **Handwritten Comments:** Extract handwritten notes with indices
+
 ### Integration
 
 - **Google Authentication:** Secure OAuth 2.0 authentication with full Drive access
@@ -117,7 +123,7 @@ This server needs permission to talk to Google APIs on your behalf. You'll creat
 
 1.  **Clone the Repository:** Open your terminal/command prompt and run:
     ```bash
-    git clone https://github.com/a-bonus/google-docs-mcp.git mcp-googledocs-server
+    git clone https://github.com/jutian1335230/Annotation-to-Redline.git mcp-googledocs-server
     ```
 2.  **Navigate into Directory:**
     ```bash
@@ -125,17 +131,7 @@ This server needs permission to talk to Google APIs on your behalf. You'll creat
     ```
 3.  **Place Credentials:** Move or copy the `credentials.json` file you downloaded and renamed (from Step 1.6) directly into this `mcp-googledocs-server` folder.
 
-### Step 3: Install Dependencies
-
-Your server needs some helper libraries specified in the `package.json` file.
-
-1.  In your terminal (make sure you are inside the `mcp-googledocs-server` directory), run:
-    ```bash
-    npm install
-    ```
-    This will download and install all the necessary packages into a `node_modules` folder.
-
-### Step 4: First Run & Google Authorization (One Time Only)
+### Step 3: First Run & Google Authorization (One Time Only)
 
 Now you need to run the server once manually to grant it permission to access your Google account data. This will create a `token.json` file that saves your permission grant.
 
@@ -164,7 +160,7 @@ Now you need to run the server once manually to grant it permission to access yo
 8.  ✅ **Check:** You should now see a new file named `token.json` in your `mcp-googledocs-server` folder.
 9.  ⚠️ **SECURITY WARNING:** This `token.json` file contains the key that allows the server to access your Google account _without_ asking again. Protect it like a password. **Do not commit it to GitHub.** The included `.gitignore` file should prevent this automatically.
 
-### Step 5: Configure Claude Desktop (Optional)
+### Step 4: Configure Claude Desktop
 
 If you want to use this server with Claude Desktop, you need to tell Claude how to run it.
 
@@ -187,7 +183,10 @@ If you want to use this server with Claude Desktop, you need to tell Claude how 
           "args": [
             "/PATH/TO/YOUR/CLONED/REPO/mcp-googledocs-server/dist/server.js"
           ],
-          "env": {}
+          "env": {
+            "OPENAI_API_KEY": # your OpenAPI key,
+            "OPENAI_MODEL": "gpt-5.2"
+          }
         }
         // Add commas here if you have other servers defined
       }
