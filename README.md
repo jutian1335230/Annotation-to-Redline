@@ -1,4 +1,6 @@
-# Ultimate Google Docs & Drive MCP Server (Demo Link: https://youtu.be/k4Vd2B0e1bU)
+# Ultimate Google Docs & Drive MCP Server
+
+🎥 **Full Demo Video:** https://youtu.be/k4Vd2B0e1bU
 
 ![Demo Animation](assets/google.docs.mcp.1.gif)
 
