@@ -377,3 +377,5 @@ While this MCP server provides comprehensive Google Docs and Drive functionality
 ## License
 
 This project is licensed under the MIT License - see the `LICENSE` file for details. (Note: You should add a `LICENSE` file containing the MIT License text to your repository).
+
+This project is adapted from [a-bonus/google-docs-mcp](https://github.com/a-bonus/google-docs-mcp) and extends it with additional MCP tools, descriptions, and functionality.
