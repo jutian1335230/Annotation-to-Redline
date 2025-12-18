@@ -73,7 +73,7 @@ Before you start, make sure you have:
 2.  **Git:** Required for cloning this repository. ([Download Git](https://git-scm.com/downloads)).
 3.  **A Google Account:** The account that owns or has access to the Google Docs you want to interact with.
 4.  **Command Line Familiarity:** Basic comfort using a terminal or command prompt (like Terminal on macOS/Linux, or Command Prompt/PowerShell on Windows).
-5.  **Claude Desktop (Optional):** If your goal is to connect this server to Claude, you'll need the Claude Desktop application installed.
+5.  **Claude Desktop:** You'll need the Claude Desktop application installed.
 
 ---
 
