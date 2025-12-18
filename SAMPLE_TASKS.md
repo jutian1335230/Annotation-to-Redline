@@ -1,4 +1,4 @@
-# 15 Powerful Tasks with the Ultimate Google Docs & Drive MCP Server
+# 16 Powerful Tasks with the Ultimate Google Docs & Drive MCP Server
 
 This document showcases practical examples of what you can accomplish with the enhanced Google Docs & Drive MCP Server. These examples demonstrate how AI assistants like Claude can perform sophisticated document formatting, structuring, and file management tasks through the MCP interface.
 
